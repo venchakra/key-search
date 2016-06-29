@@ -1,0 +1,82 @@
+Testplan for the Search API
+---------------------------
+
+1) Functional Testing:
+   - Test for different sizes of the input array (arrays having only 1
+     element to arrays having multiple elements)
+   - Test for parameter validation
+     - NULL input arrays not allowed
+     - n_items is always greater than 0
+     - index pointer is not NULL
+   - Test for all SearchType combinations for both ascending and
+     descending sorted order arrays:
+     - LessThan
+     - LessThanEquals
+     - Equals
+     - GreaterThanEquals
+     - GreaterThan
+
+   NOTE:
+   -----
+   A total of 55 automated functional unit tests have been implemented.
+   All functional tests have been automated using CxxTest unit testing
+   framework.
+   Source file containing the implementation of the Search API is at:
+              mapr/src/search.cpp(.h)
+   All unit tests are located at:
+              mapr/test/searchtest.ut
+   A Makefile has been provided at
+              mapr/Makefile
+
+   This Makefile will do the following:
+   - Package the Search API implementation at
+              mapr/src/search.cpp
+     as a userspace library
+              mapr/lib/libsearcher.a
+   - Compile the unit tests (under
+              mapr/test/searchtest.ut
+     and build a test binary
+              mapr/test/testrunner
+   - Run the unit tests and generate a code coverage report for the
+     source file. The HTML file containing the code coverage is
+     located at
+              mapr/coverage/index.html
+     and
+              mapr/coverage/src/search.cpp.gcov.html
+     Opening the above HTML files in a browser: 
+              file://localhost/<yourdir>/mapr/coverage/src/search.cpp.gcov.html
+     will help you see the code coverage report
+
+   Line and Branch Coverage of the unit tests have been verified using
+   Gcov. Here is the coverage rate for the functional unit tests.
+
+   Overall coverage rate:
+     lines......: 100.0% (104 of 104 lines)
+     functions..: 100.0% (8 of 8 functions)
+     branches...: 96.3% (79 of 82 branches)
+
+2) Scale and Performance Testing:
+   - When the keys being searched are at the boundary of the input
+     array, the cost of lookup is not always linear.
+   - Performance in such scenarios is verified by passing in really
+     large sized input arrays. If the key satisfies a boundary
+     condition, the lookup time (measured in microseconds or smaller)
+     will be low when compared with the lookup time for an element
+     that is in the middle of the array.
+
+3) Concurrent Access Testing:
+   - If there are multiple threads simultaneously performing search
+     operations, lookup times for one reader thread should not be
+     affected by the lookup operation being performed by another
+     thread. In other words the performance of the Search API is
+     solely dependent on the SearchType, location of the key within
+     the array and the size of the array for a particular reader
+     thread. The performance of the Search API is not affected if
+     there are multiple reader threads performing lookups
+     simultaneously.
+   - The above implementation of the Search API is coded such that the
+     input array of items is not modified when a lookup operation for
+     a key is being done. If in future the API changes and the
+     contents of the array can be modified by a writer thread,
+     additional tests will be needed to test for synchronization
+     issues between the writer threads and reader threads.

@@ -1,0 +1,1008 @@
+#include <cxxtest/TestSuite.h>
+#include <search.h>
+#include <cstdio>
+
+class SearchTestSuite : public CxxTest::TestSuite
+{
+ public:
+        void testDummy(void)
+        {
+                printf("\nDummy Test, does nothing\n");
+                TS_ASSERT(1 + 1 > 1);
+                TS_ASSERT_EQUALS(1 + 1, 2);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Ascending LessThan
+    //-------------------------------------------------------------------------
+        void testSearchAscLTNF0(void)
+        {
+                printf("\nSearch Ascending LessThan giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+
+                key = 8;
+                index = -1;
+                r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscLTFL0(void)
+        {
+                printf("\nSearch Ascending LessThan giving FoundLess 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(FoundLess, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscLTNF1(void)
+        {
+                printf("\nSearch Ascending LessThan giving NotFound 1\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = -1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscLTNF2(void)
+        {
+                printf("\nSearch Ascending LessThan giving NotFound 2\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 0;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscLTFL(void)
+        {
+                printf("\nSearch Ascending LessThan giving FoundLess\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+
+                for (int i = 1; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i-1, index);
+                }
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Ascending LessThanEquals
+    //-------------------------------------------------------------------------
+        void testSearchAscLTENF0(void)
+        {
+                printf("\nSearch Ascending LessThanEquals giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscLTEFE0(void)
+        {
+                printf("\nSearch Ascending LessThanEquals giving FoundExact 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundExact, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscLTEFL0(void)
+        {
+                printf("\nSearch Ascending LessThanEquals giving FoundLess 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundLess, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscLTENF(void)
+        {
+                printf("\nSearch Ascending LessThanEquals giving NotFound\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                int key = -1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscLTEFE(void)
+        {
+                printf("\nSearch Ascending LessThanEquals giving FoundExact\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundExact, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+        void testSearchAscLTEFL(void)
+        {
+                printf("\nSearch Ascending LessThanEquals giving FoundLess\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 1; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i-1, index);
+                }
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Ascending Equals
+    //-------------------------------------------------------------------------
+        void testSearchAscENF0(void)
+        {
+                printf("\nSearch Ascending Equals giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscEFE0(void)
+        {
+                printf("\nSearch Ascending Equals giving FoundExact 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                TS_ASSERT_EQUALS(FoundExact, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscEFE(void)
+        {
+                printf("\nSearch Ascending Equals giving FoundExact\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                    TS_ASSERT_EQUALS(FoundExact, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+        void testSearchAscENF(void)
+        {
+                printf("\nSearch Ascending Equals giving NotFound\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                    TS_ASSERT_EQUALS(NotFound, r);
+                    TS_ASSERT_EQUALS(-1, index);
+                }
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                    TS_ASSERT_EQUALS(NotFound, r);
+                    TS_ASSERT_EQUALS(-1, index);
+                }
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Ascending GreaterThanEquals
+    //-------------------------------------------------------------------------
+        void testSearchAscGTEFG0(void)
+        {
+                printf("\nSearch Ascending GreaterThanEquals giving FoundGreater 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundGreater, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscGTEFE0(void)
+        {
+                printf("\nSearch Ascending GreaterThanEquals giving FoundExact 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundExact, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscGTENF0(void)
+        {
+                printf("\nSearch Ascending GreaterThanEquals giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscGTEFE(void)
+        {
+                printf("\nSearch Ascending GreaterThanEquals giving FoundExact\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundExact, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+        void testSearchAscGTEFG(void)
+        {
+                printf("\nSearch Ascending GreaterThanEquals giving FoundGreater\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+
+                for (int i = 0; i < (n_items-1); i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i+1, index);
+                }
+        }
+
+        void testSearchAscGTENF1(void)
+        {
+                printf("\nSearch Ascending GreaterThanEquals giving NotFound 1\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Ascending GreaterThan
+    //-------------------------------------------------------------------------
+        void testSearchAscGTFG0(void)
+        {
+                printf("\nSearch Ascending GreaterThan giving FoundGreater 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(FoundGreater, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchAscGTNF0(void)
+        {
+                printf("\nSearch Ascending GreaterThan giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                // Test 1
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+
+                // Test 2
+                key = 9;
+                index = -1;
+                r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscGTFG(void)
+        {
+                printf("\nSearch Ascending GreaterThan giving FoundGreater\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+
+                for (int i = 0; i < (n_items-1); i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i+1, index);
+                }
+        }
+
+        void testSearchAscGTNF1(void)
+        {
+                printf("\nSearch Ascending GreaterThan giving NotFound 1\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchAscGTNF2(void)
+        {
+                printf("\nSearch Ascending GreaterThan giving NotFound 2\n");
+                int items[] = {0, 2, 4, 6, 8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Ascending Wrong Search Type
+    //-------------------------------------------------------------------------
+        void testSearchAscWrongType(void)
+        {
+                printf("\nSearch Ascending with Wrong Search Type\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 0;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, (SearchType)7, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Search with NULL Index Pointer
+    //-------------------------------------------------------------------------
+        void testSearchWithNullIndexPtr(void)
+        {
+                printf("\nSearch Ascending with NULL index pointer\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 1;
+                int key = 0;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, NULL);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Descending Wrong Search Type
+    //-------------------------------------------------------------------------
+        void testSearchDesWrongType(void)
+        {
+                printf("\nSearch Descending with Wrong Search Type\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 0;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, (SearchType)7, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Descending LessThan
+    //-------------------------------------------------------------------------
+        void testSearchDesLTFL0(void)
+        {
+                printf("\nSearch Descending LessThan giving FoundLess 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(FoundLess, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesLTNF0(void)
+        {
+                printf("\nSearch Descending LessThan giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesLTFL(void)
+        {
+                printf("\nSearch Descending LessThan giving FoundLess\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+
+                for (int i = 0; i < (n_items-1); i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i+1, index);
+                }
+        }
+
+        void testSearchDesLTNF1(void)
+        {
+                printf("\nSearch Descending LessThan giving NotFound 1\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = -1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesLTNF2(void)
+        {
+                printf("\nSearch Descending LessThan giving NotFound 2\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 0;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Descending LessThanEquals
+    //-------------------------------------------------------------------------
+        void testSearchDesLTEFL0(void)
+        {
+                printf("\nSearch Descending LessThanEquals giving FoundLess 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundLess, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesLTEFE0(void)
+        {
+                printf("\nSearch Descending LessThanEquals giving FoundExact 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundExact, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesLTENF0(void)
+        {
+                printf("\nSearch Descending LessThanEquals giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesLTEFL(void)
+        {
+                printf("\nSearch Descending LessThanEquals giving FoundLess\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundLess, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+        void testSearchDesLTEFE(void)
+        {
+                printf("\nSearch Descending LessThanEquals giving FoundExact\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundExact, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+        void testSearchDesLTENF(void)
+        {
+                printf("\nSearch Descending LessThanEquals giving NotFound\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = -1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, LessThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Descending Equals
+    //-------------------------------------------------------------------------
+        void testSearchDesENF0(void)
+        {
+                printf("\nSearch Descending Equals giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 7;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesEFE0(void)
+        {
+                printf("\nSearch Descending Equals giving NotFound 0\n");
+                int items[] = {8};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 8;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                TS_ASSERT_EQUALS(FoundExact, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesENF(void)
+        {
+                printf("\nSearch Descending Equals giving NotFound\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]+1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                    TS_ASSERT_EQUALS(NotFound, r);
+                    TS_ASSERT_EQUALS(-1, index);
+                }
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                    TS_ASSERT_EQUALS(NotFound, r);
+                    TS_ASSERT_EQUALS(-1, index);
+                }
+        }
+
+        void testSearchDesEFE(void)
+        {
+                printf("\nSearch Descending Equals giving FoundExact\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, Equals, &index);
+
+                    TS_ASSERT_EQUALS(FoundExact, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+    //-------------------------------------------------------------------------
+    // Tests for Descending GreaterThanEquals
+    //-------------------------------------------------------------------------
+        void testSearchDesGTENF0(void)
+        {
+                printf("\nSearch Descending GreaterThanEquals giving NotFound 0\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesGTEFE0(void)
+        {
+                printf("\nSearch Descending GreaterThanEquals giving FoundExact 0\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 0;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundExact, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesGTEFG0(void)
+        {
+                printf("\nSearch Descending GreaterThanEquals giving FoundGreater 0\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = -1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(FoundGreater, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesGTENF(void)
+        {
+                printf("\nSearch Descending GreaterThanEquals giving NotFound\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesGTEFE(void)
+        {
+                printf("\nSearch Descending GreaterThanEquals giving FoundExact\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundExact, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+        void testSearchDesGTEFG(void)
+        {
+                printf("\nSearch Descending GreaterThanEquals giving FoundGreater\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThanEquals, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+        }
+
+
+    //-------------------------------------------------------------------------
+    // Tests for Descending GreaterThan
+    //-------------------------------------------------------------------------
+        void testSearchDesGTNF0(void)
+        {
+                printf("\nSearch Descending GreaterThan giving NotFound 0\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = 1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+
+                key = 0;
+                index = -1;
+                r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+
+        void testSearchDesGTFG0(void)
+        {
+                printf("\nSearch Descending GreaterThan giving FoundGreater 0\n");
+                int items[] = {0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+                int key = -1;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(FoundGreater, r);
+                TS_ASSERT_EQUALS(0, index);
+        }
+
+        void testSearchDesGTFG(void)
+        {
+                printf("\nSearch Descending GreaterThan giving FoundGreater\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                for (int i = 0; i < n_items; i++) {
+                    int key = items[i]-1;
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i, index);
+                }
+
+                for (int i = 1; i < n_items; i++) {
+                    int key = items[i];
+                    int index = -1;
+                    SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                    TS_ASSERT_EQUALS(FoundGreater, r);
+                    TS_ASSERT_EQUALS(i-1, index);
+                }
+        }
+
+        void testSearchDesGTNF(void)
+        {
+                printf("\nSearch Descending GreaterThan giving NotFound\n");
+                int items[] = {8, 6, 4, 2, 0};
+                int n_items = sizeof(items)/sizeof(items[0]);
+
+                int ascending = 0;
+
+                int key = 9;
+                int index = -1;
+                SearchResult r = Search(items, n_items, ascending, key, GreaterThan, &index);
+
+                TS_ASSERT_EQUALS(NotFound, r);
+                TS_ASSERT_EQUALS(-1, index);
+        }
+};
