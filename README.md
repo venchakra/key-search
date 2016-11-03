@@ -60,16 +60,16 @@ In other words this Makefile will do the following:
 Example run: Running 'make clean'
 ---------------------------------------------------------------------------
 <pre>
-venkatc@ubuntu-pc:/media/sf_Code/mapr $make clean
+venkatc@ubuntu-pc:/media/sf_Code/Algos/mapr $make clean
 set -e; for d in src test; do make -C $d clean; done
-make[1]: Entering directory `/media/sf_Code/src'
+make[1]: Entering directory `/media/sf_Code/Algos/src'
 rm -rf ../lib/libsearcher.a search.o *~ *.gc* *.html
 rm -rf ../lib
-make[1]: Leaving directory `/media/sf_Code/src'
-make[1]: Entering directory `/media/sf_Code/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/src'
+make[1]: Entering directory `/media/sf_Code/Algos/test'
 rm -rf testrunner searchtest.cpp searchtest.o *~
 rm -rf ../coverage
-make[1]: Leaving directory `/media/sf_Code/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/test'
 rm -rf *~
 </pre>
 
@@ -77,17 +77,17 @@ rm -rf *~
 Example run: Running 'make'
 ---------------------------------------------------------------------------
 <pre>
-venkatc@ubuntu-pc:/media/sf_Code/mapr $make
+venkatc@ubuntu-pc:/media/sf_Code/Algos/mapr $make
 set -e; for d in src test; do make -C $d ; done
-make[1]: Entering directory `/media/sf_Code/src'
+make[1]: Entering directory `/media/sf_Code/Algos/src'
 g++ -g -fprofile-arcs -ftest-coverage   -c -o search.o search.cpp
 ar -r libsearcher.a search.o
 ar: creating libsearcher.a
 mkdir -p ../lib
 rm -f ../lib/libsearcher.a
 mv libsearcher.a ../lib/libsearcher.a
-make[1]: Leaving directory `/media/sf_Code/src'
-make[1]: Entering directory `/media/sf_Code/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/src'
+make[1]: Entering directory `/media/sf_Code/Algos/test'
 cxxtestgen --error-printer -o searchtest.cpp searchtest.ut
 g++ -g -I../src -L../lib  -lsearcher -lgcov -c searchtest.cpp
 g++ -g -I../src -o testrunner searchtest.o -L../lib  -lsearcher -lgcov
@@ -96,7 +96,7 @@ lcov --directory ../src --zerocounters
 Deleting all .da files in ../src and subdirectories
 Done.
 testrunner
-Running cxxtest tests (55 tests)
+Running cxxtest tests (54 tests)
 Dummy Test, does nothing
 .
 Search Ascending LessThan giving NotFound 0
@@ -153,8 +153,6 @@ Search Ascending GreaterThan giving NotFound 2
 .
 Search Ascending with Wrong Search Type
 Error in search type
-.
-Search Ascending with NULL index pointer
 .
 Search Descending with Wrong Search Type
 Error in search type
@@ -219,14 +217,14 @@ Finished .info-file creation
 genhtml --branch-coverage -o ../coverage ../coverage/stap.info
 Reading data file ../coverage/stap.info
 Found 1 entries.
-Found common filename prefix "/media/sf_Code/mapr"
+Found common filename prefix "/media/sf_Code/Algos/mapr"
 Writing .css and .png files.
 Generating output.
 Processing file src/search.cpp
 Writing directory view page.
 Overall coverage rate:
-  lines......: 100.0% (104 of 104 lines)
-  functions..: 100.0% (8 of 8 functions)
-  branches...: 96.3% (79 of 82 branches)
-make[1]: Leaving directory `/media/sf_Code/test'
+  lines......: 100.0% (65 of 65 lines)
+  functions..: 100.0% (6 of 6 functions)
+  branches...: 94.4% (51 of 54 branches)
+make[1]: Leaving directory `/media/sf_Code/Algos/test'
 </pre>
