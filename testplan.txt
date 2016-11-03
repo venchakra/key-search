@@ -22,38 +22,38 @@ Testplan for the Search API
    All functional tests have been automated using CxxTest unit testing
    framework.
    Source file containing the implementation of the Search API is at:
-              mapr/src/search.cpp(.h)
+              src/search.cpp(.h)
    All unit tests are located at:
-              mapr/test/searchtest.ut
+              test/searchtest.ut
    A Makefile has been provided at
-              mapr/Makefile
+              Makefile
 
    This Makefile will do the following:
    - Package the Search API implementation at
-              mapr/src/search.cpp
+              src/search.cpp
      as a userspace library
-              mapr/lib/libsearcher.a
+              lib/libsearcher.a
    - Compile the unit tests (under
-              mapr/test/searchtest.ut
+              test/searchtest.ut
      and build a test binary
-              mapr/test/testrunner
+              test/testrunner
    - Run the unit tests and generate a code coverage report for the
      source file. The HTML file containing the code coverage is
      located at
-              mapr/coverage/index.html
+              coverage/index.html
      and
-              mapr/coverage/src/search.cpp.gcov.html
+              coverage/src/search.cpp.gcov.html
      Opening the above HTML files in a browser: 
-              file://localhost/<yourdir>/mapr/coverage/src/search.cpp.gcov.html
+              file://localhost/<yourdir>/coverage/src/search.cpp.gcov.html
      will help you see the code coverage report
 
    Line and Branch Coverage of the unit tests have been verified using
    Gcov. Here is the coverage rate for the functional unit tests.
 
    Overall coverage rate:
-     lines......: 100.0% (104 of 104 lines)
-     functions..: 100.0% (8 of 8 functions)
-     branches...: 96.3% (79 of 82 branches)
+     lines......: 100.0% (65 of 65 lines)
+     functions..: 100.0% (6 of 6 functions)
+     branches...: 94.4% (51 of 54 branches)
 
 2) Scale and Performance Testing:
    - When the keys being searched are at the boundary of the input

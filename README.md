@@ -60,7 +60,7 @@ In other words this Makefile will do the following:
 Example run: Running 'make clean'
 ---------------------------------------------------------------------------
 <pre>
-venkatc@ubuntu-pc:/media/sf_Code/Algos/mapr $make clean
+venkatc@ubuntu-pc:/media/sf_Code/Algos $make clean
 set -e; for d in src test; do make -C $d clean; done
 make[1]: Entering directory `/media/sf_Code/Algos/src'
 rm -rf ../lib/libsearcher.a search.o *~ *.gc* *.html
@@ -77,7 +77,7 @@ rm -rf *~
 Example run: Running 'make'
 ---------------------------------------------------------------------------
 <pre>
-venkatc@ubuntu-pc:/media/sf_Code/Algos/mapr $make
+venkatc@ubuntu-pc:/media/sf_Code/Algos $make
 set -e; for d in src test; do make -C $d ; done
 make[1]: Entering directory `/media/sf_Code/Algos/src'
 g++ -g -fprofile-arcs -ftest-coverage   -c -o search.o search.cpp
@@ -217,7 +217,7 @@ Finished .info-file creation
 genhtml --branch-coverage -o ../coverage ../coverage/stap.info
 Reading data file ../coverage/stap.info
 Found 1 entries.
-Found common filename prefix "/media/sf_Code/Algos/mapr"
+Found common filename prefix "/media/sf_Code/Algos"
 Writing .css and .png files.
 Generating output.
 Processing file src/search.cpp
