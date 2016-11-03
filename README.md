@@ -13,78 +13,81 @@ the sources and executing the unit tests.
 C++ Source Files
 ---------------------------------------------------------------------------
 Source file containing the implementation of the Search API is at:
-              mapr/src/search.cpp(.h)
+              src/search.cpp(.h)
 
 ---------------------------------------------------------------------------
 CxxTest Automated Unit Tests
 ---------------------------------------------------------------------------
 All automated CxxTest unit tests are located at:
-              mapr/test/searchtest.ut
+              test/searchtest.ut
 
 ---------------------------------------------------------------------------
 Makefile
 ---------------------------------------------------------------------------
 A Makefile has been provided at
-              mapr/Makefile
+              Makefile
 which will invoke
-              mapr/src/Makefile
+              src/Makefile
 to build the source files and package it as a library and also invoke
-              mapr/test/Makefile
+              test/Makefile
 to build the CxxTest unit tests, execute them and generate code coverage
 reports.
 
 In other words this Makefile will do the following:
 
    - Package the Search API implementation at
-              mapr/src/search.cpp
+              src/search.cpp
      as a userspace library
-              mapr/lib/libsearcher.a
+              lib/libsearcher.a
 
    - Compile the unit tests (under
-              mapr/test/searchtest.ut
+              test/searchtest.ut
      and build a test binary
-              mapr/test/testrunner
+              test/testrunner
 
    - Run the unit tests and generate a code coverage report for the
      source file. The HTML file containing the code coverage is
      located at
-              mapr/coverage/index.html
+              coverage/index.html
      and
-              mapr/coverage/src/search.cpp.gcov.html
+              coverage/src/search.cpp.gcov.html
 
    Opening the above HTML files in a browser: 
-              file://localhost/<yourdir>/mapr/coverage/src/search.cpp.gcov.html
+              file://localhost/<yourdir>/coverage/src/search.cpp.gcov.html
    will help you see the code coverage report
 
 ---------------------------------------------------------------------------
 Example run: Running 'make clean'
 ---------------------------------------------------------------------------
+<pre>
 venkatc@ubuntu-pc:/media/sf_Code/mapr $make clean
 set -e; for d in src test; do make -C $d clean; done
-make[1]: Entering directory `/media/sf_Code/mapr/src'
+make[1]: Entering directory `/media/sf_Code/src'
 rm -rf ../lib/libsearcher.a search.o *~ *.gc* *.html
 rm -rf ../lib
-make[1]: Leaving directory `/media/sf_Code/mapr/src'
-make[1]: Entering directory `/media/sf_Code/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/src'
+make[1]: Entering directory `/media/sf_Code/test'
 rm -rf testrunner searchtest.cpp searchtest.o *~
 rm -rf ../coverage
-make[1]: Leaving directory `/media/sf_Code/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/test'
 rm -rf *~
+</pre>
 
 ---------------------------------------------------------------------------
 Example run: Running 'make'
 ---------------------------------------------------------------------------
+<pre>
 venkatc@ubuntu-pc:/media/sf_Code/mapr $make
 set -e; for d in src test; do make -C $d ; done
-make[1]: Entering directory `/media/sf_Code/mapr/src'
+make[1]: Entering directory `/media/sf_Code/src'
 g++ -g -fprofile-arcs -ftest-coverage   -c -o search.o search.cpp
 ar -r libsearcher.a search.o
 ar: creating libsearcher.a
 mkdir -p ../lib
 rm -f ../lib/libsearcher.a
 mv libsearcher.a ../lib/libsearcher.a
-make[1]: Leaving directory `/media/sf_Code/mapr/src'
-make[1]: Entering directory `/media/sf_Code/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/src'
+make[1]: Entering directory `/media/sf_Code/test'
 cxxtestgen --error-printer -o searchtest.cpp searchtest.ut
 g++ -g -I../src -L../lib  -lsearcher -lgcov -c searchtest.cpp
 g++ -g -I../src -o testrunner searchtest.o -L../lib  -lsearcher -lgcov
@@ -225,4 +228,5 @@ Overall coverage rate:
   lines......: 100.0% (104 of 104 lines)
   functions..: 100.0% (8 of 8 functions)
   branches...: 96.3% (79 of 82 branches)
-make[1]: Leaving directory `/media/sf_Code/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/test'
+</pre>
