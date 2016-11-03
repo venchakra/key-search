@@ -523,22 +523,6 @@ class SearchTestSuite : public CxxTest::TestSuite
         }
 
     //-------------------------------------------------------------------------
-    // Tests for Search with NULL Index Pointer
-    //-------------------------------------------------------------------------
-        void testSearchWithNullIndexPtr(void)
-        {
-                printf("\nSearch Ascending with NULL index pointer\n");
-                int items[] = {0};
-                int n_items = sizeof(items)/sizeof(items[0]);
-
-                int ascending = 1;
-                int key = 0;
-                SearchResult r = Search(items, n_items, ascending, key, LessThan, NULL);
-
-                TS_ASSERT_EQUALS(NotFound, r);
-        }
-
-    //-------------------------------------------------------------------------
     // Tests for Descending Wrong Search Type
     //-------------------------------------------------------------------------
         void testSearchDesWrongType(void)

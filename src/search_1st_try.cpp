@@ -106,8 +106,13 @@ SearchLessThan(const int * const items,
         return NotFound;
     }
 
+    if (items[end] < key) {
+        *index = end;
+        return FoundLess;
+    }
+
     int idx = start;
-    while ((idx != end+step) && (items[idx] < key)) {
+    while ((idx != end) && (items[idx] < key)) {
         *index = idx;
         idx+=step;
     }
@@ -128,13 +133,28 @@ SearchLessThanEquals(const int * const items,
         return NotFound;
     }
 
+    if (items[start] == key) {
+        *index = start;
+        return FoundExact;
+    }
+
+    if (items[end] < key) {
+        *index = end;
+        return FoundLess;
+    }
+
+    if (items[end] == key) {
+        *index = end;
+        return FoundExact;
+    }
+
     int idx = start;
-    while ((idx != end+step) && (items[idx] <= key)) {
+    while ((idx != end) && (items[idx] <= key)) {
         *index = idx;
         idx+=step;
     }
 
-    if (items[*index] == key) {
+    if (items[(*index)] == key) {
         return FoundExact;
     }
 
@@ -149,15 +169,18 @@ SearchEquals(const int * const items,
              const int start,
              const int end,
              const int step)
-{ 
-    int idx = start;
-    while ((idx != end+step) && (items[idx] != key)) {
-        idx+=step;
+{
+    if ((items[start] > key) || (items[end] < key)) {
+        return NotFound;
     }
 
-    if (items[idx] == key) {
-        *index = idx;
-        return FoundExact;
+    for (int idx = start; idx != (end+step); idx+=step) {
+        if (items[idx] == key) {
+            *index = idx;
+            return FoundExact;
+        } else if (items[idx] > key) {
+            break;
+        }
     }
 
     return NotFound;
@@ -172,18 +195,33 @@ SearchGreaterThanEquals(const int * const items,
                         const int end,
                         const int step)
 {
-    int idx = start;
+    if (items[start] > key) {
+        *index = start;
+        return FoundGreater;
+    }
+
+    if (items[start] == key) {
+        *index = start;
+        return FoundExact;
+    }
+
+    if (items[end] < key) {
+        return NotFound;
+    }
+
+    if (items[end] == key) {
+        *index = end;
+        return FoundExact;
+    }
+
+    int idx = start+step;
     while ((idx != end) && (items[idx] < key)) {
         idx+=step;
     }
 
-    if (items[idx] < key) {
-        return NotFound;
-    }
-
     *index = idx;
 
-    if (items[idx] == key) {
+    if (items[(*index)] == key) {
         return FoundExact;
     }
 
@@ -199,17 +237,70 @@ SearchGreaterThan(const int * const items,
                   const int end,
                   const int step)
 {
-    int idx = start;
+    if (items[start] > key) {
+        *index = start;
+        return FoundGreater;
+    }
+
+    if (items[end] <= key) {
+        return NotFound;
+    }
+
+    int idx = start+step;
     while ((idx != end) && (items[idx] <= key)) {
         idx+=step;
     }
 
-    if (items[idx] <= key) {
-        return NotFound;
-    }
-
     *index = idx;
     return FoundGreater;
+}
+
+static SearchResult
+SearchDescending(const int * const items,
+                 const int n_items,
+                 const int key,
+                 const SearchType type,
+                 int* const index)
+{
+    if (type == LessThan) {
+        return SearchLessThan(items, n_items, key, index, (n_items-1), 0, -1);
+    } else if (type == LessThanEquals) {
+        return SearchLessThanEquals(items, n_items, key, index, (n_items-1), 0, -1);
+    } else if (type == Equals) {
+        return SearchEquals(items, n_items, key, index, (n_items-1), 0, -1);
+    } else if (type == GreaterThanEquals) {
+        return SearchGreaterThanEquals(items, n_items, key, index, (n_items-1), 0, -1);
+    } else if (type == GreaterThan) {
+        return SearchGreaterThan(items, n_items, key, index, (n_items-1), 0, -1);
+    } else {
+        // Error
+        printf("Error in search type\n");
+        return NotFound;
+    }
+}
+
+static SearchResult
+SearchAscending(const int * const items,
+                const int n_items,
+                const int key,
+                const SearchType type,
+                int* const index)
+{
+    if (type == LessThan) {
+        return SearchLessThan(items, n_items, key, index, 0, (n_items-1), 1);
+    } else if (type == LessThanEquals) {
+        return SearchLessThanEquals(items, n_items, key, index, 0, (n_items-1), 1);
+    } else if (type == Equals) {
+        return SearchEquals(items, n_items, key, index, 0, (n_items-1), 1);
+    } else if (type == GreaterThanEquals) {
+        return SearchGreaterThanEquals(items, n_items, key, index, 0, (n_items-1), 1);
+    } else if (type == GreaterThan) {
+        return SearchGreaterThan(items, n_items, key, index, 0, (n_items-1), 1);
+    } else {
+        // Error
+        printf("Error in search type\n");
+        return NotFound;
+    }
 }
 
 SearchResult
@@ -220,46 +311,16 @@ Search(const int * const items,
        const SearchType type,
        int* const index)
 {
+    if (NULL == index) {
+        return NotFound;
+    }
+
     assert(NULL != items);
-    assert(NULL != index);
     assert(n_items > 0);
 
-    switch (ascending) {
-    case 0:
-        // Descending sorted array
-        switch (type) {
-        case LessThan:
-            return SearchLessThan(items, n_items, key, index, (n_items-1), 0, -1);
-        case LessThanEquals:
-            return SearchLessThanEquals(items, n_items, key, index, (n_items-1), 0, -1);
-        case Equals:
-            return SearchEquals(items, n_items, key, index, (n_items-1), 0, -1);
-        case GreaterThanEquals:
-            return SearchGreaterThanEquals(items, n_items, key, index, (n_items-1), 0, -1);
-        case GreaterThan:
-            return SearchGreaterThan(items, n_items, key, index, (n_items-1), 0, -1);
-        default:
-            // Error
-            printf("Error in search type\n");
-            return NotFound;
-        }
-    default:
-        // Ascending sorted array
-        switch (type) {
-        case LessThan:
-            return SearchLessThan(items, n_items, key, index, 0, (n_items-1), 1);
-        case LessThanEquals:
-            return SearchLessThanEquals(items, n_items, key, index, 0, (n_items-1), 1);
-        case Equals:
-            return SearchEquals(items, n_items, key, index, 0, (n_items-1), 1);
-        case GreaterThanEquals:
-            return SearchGreaterThanEquals(items, n_items, key, index, 0, (n_items-1), 1);
-        case GreaterThan:
-            return SearchGreaterThan(items, n_items, key, index, 0, (n_items-1), 1);
-        default:
-            // Error
-            printf("Error in search type\n");
-            return NotFound;
-        }
+    if (ascending != 0) {
+        return SearchAscending(items, n_items, key, type, index);
+    } else {
+        return SearchDescending(items, n_items, key, type, index);
     }
 }
