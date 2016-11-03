@@ -7,94 +7,79 @@ SearchHelper(const int * const items,
              const int key,
              const SearchType type,
              int* const index,
-             int start,
-             int end,
+             int startIndex,
+             int endIndex,
              int step)
 {
     switch (type) {
     case LessThan:
-        {
-            if (items[start] >= key) {
-                return NotFound;
-            }
-
-            int idx = start;
-            while ((idx != end+step) && (items[idx] < key)) {
-                *index = idx;
-                idx+=step;
-            }
-
-            return FoundLess;
-        }
-
-    case LessThanEquals:
-        {
-            if (items[start] > key) {
-                return NotFound;
-            }
-
-            int idx = start;
-            while ((idx != end+step) && (items[idx] <= key)) {
-                *index = idx;
-                idx+=step;
-            }
-
-            if (items[*index] == key) {
-                return FoundExact;
-            }
-
-            return FoundLess;
-        }
-
-    case Equals:
-        { 
-            int idx = start;
-            while ((idx != end+step) && (items[idx] != key)) {
-                idx+=step;
-            }
-
-            if (items[idx] == key) {
-                *index = idx;
-                return FoundExact;
-            }
-
+        if (items[startIndex] >= key) {
             return NotFound;
         }
 
-    case GreaterThanEquals:
-        {
-            int idx = start;
-            while ((idx != end) && (items[idx] < key)) {
-                idx+=step;
-            }
-
-            if (items[idx] < key) {
-                return NotFound;
-            }
-
-            *index = idx;
-
-            if (items[idx] == key) {
-                return FoundExact;
-            }
-
-            return FoundGreater;
+        while ((startIndex != endIndex+step) && (items[startIndex] < key)) {
+            *index = startIndex;
+            startIndex += step;
         }
+
+        return FoundLess;
+
+    case LessThanEquals:
+        if (items[startIndex] > key) {
+            return NotFound;
+        }
+
+        while ((startIndex != endIndex+step) && (items[startIndex] <= key)) {
+            *index = startIndex;
+            startIndex += step;
+        }
+
+        if (items[*index] == key) {
+            return FoundExact;
+        }
+
+        return FoundLess;
+
+    case Equals:
+        while ((startIndex != endIndex+step) && (items[startIndex] != key)) {
+            startIndex += step;
+        }
+
+        if (items[startIndex] == key) {
+            *index = startIndex;
+            return FoundExact;
+        }
+
+        return NotFound;
+
+    case GreaterThanEquals:
+        while ((startIndex != endIndex) && (items[startIndex] < key)) {
+            startIndex += step;
+        }
+
+        if (items[startIndex] < key) {
+            return NotFound;
+        }
+
+        *index = startIndex;
+
+        if (items[startIndex] == key) {
+            return FoundExact;
+        }
+
+        return FoundGreater;
 
     case GreaterThan:
-        {
-            int idx = start;
-            while ((idx != end) && (items[idx] <= key)) {
-                idx+=step;
-            }
-
-            if (items[idx] <= key) {
-                return NotFound;
-            }
-
-            *index = idx;
-            return FoundGreater;
+        while ((startIndex != endIndex) && (items[startIndex] <= key)) {
+            startIndex += step;
         }
+
+        if (items[startIndex] <= key) {
+            return NotFound;
+        }
+
+        *index = startIndex;
+        return FoundGreater;
 
     default:
         // Error
@@ -115,12 +100,11 @@ Search(const int * const items,
     assert(NULL != index);
     assert(n_items > 0);
 
-    switch (ascending) {
-    case 0:
-        // Descending sorted array
-        return SearchHelper(items, key, type, index, (n_items-1), 0, -1);
-    default:
+    if (ascending) {
         // Ascending sorted array
         return SearchHelper(items, key, type, index, 0, (n_items-1), 1);
     }
+
+    // Descending sorted array (we always examine the array in ascending order)
+    return SearchHelper(items, key, type, index, (n_items-1), 0, -1);
 }
