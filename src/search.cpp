@@ -4,7 +4,6 @@
 
 static SearchResult
 SearchLessThan(const int * const items,
-               const int n_items,
                const int key,
                int* const index,
                const int start,
@@ -26,7 +25,6 @@ SearchLessThan(const int * const items,
 
 static SearchResult
 SearchLessThanEquals(const int * const items,
-                     const int n_items,
                      const int key,
                      int* const index,
                      const int start,
@@ -52,7 +50,6 @@ SearchLessThanEquals(const int * const items,
 
 static SearchResult
 SearchEquals(const int * const items,
-             const int n_items,
              const int key,
              int* const index,
              const int start,
@@ -74,7 +71,6 @@ SearchEquals(const int * const items,
 
 static SearchResult
 SearchGreaterThanEquals(const int * const items,
-                        const int n_items,
                         const int key,
                         int* const index,
                         const int start,
@@ -101,7 +97,6 @@ SearchGreaterThanEquals(const int * const items,
 
 static SearchResult
 SearchGreaterThan(const int * const items,
-                  const int n_items,
                   const int key,
                   int* const index,
                   const int start,
@@ -122,6 +117,33 @@ SearchGreaterThan(const int * const items,
 }
 
 SearchResult
+SearchHelper(const int * const items,
+             const int key,
+             const SearchType type,
+             int* const index,
+             int start,
+             int end,
+             int step)
+{
+    switch (type) {
+    case LessThan:
+        return SearchLessThan(items, key, index, start, end, step);
+    case LessThanEquals:
+        return SearchLessThanEquals(items, key, index, start, end, step);
+    case Equals:
+        return SearchEquals(items, key, index, start, end, step);
+    case GreaterThanEquals:
+        return SearchGreaterThanEquals(items, key, index, start, end, step);
+    case GreaterThan:
+        return SearchGreaterThan(items, key, index, start, end, step);
+    default:
+        // Error
+        printf("Error in search type\n");
+        return NotFound;
+    }
+}
+
+SearchResult
 Search(const int * const items,
        const int n_items,
        const int ascending,
@@ -136,39 +158,9 @@ Search(const int * const items,
     switch (ascending) {
     case 0:
         // Descending sorted array
-        switch (type) {
-        case LessThan:
-            return SearchLessThan(items, n_items, key, index, (n_items-1), 0, -1);
-        case LessThanEquals:
-            return SearchLessThanEquals(items, n_items, key, index, (n_items-1), 0, -1);
-        case Equals:
-            return SearchEquals(items, n_items, key, index, (n_items-1), 0, -1);
-        case GreaterThanEquals:
-            return SearchGreaterThanEquals(items, n_items, key, index, (n_items-1), 0, -1);
-        case GreaterThan:
-            return SearchGreaterThan(items, n_items, key, index, (n_items-1), 0, -1);
-        default:
-            // Error
-            printf("Error in search type\n");
-            return NotFound;
-        }
+        return SearchHelper(items, key, type, index, (n_items-1), 0, -1);
     default:
         // Ascending sorted array
-        switch (type) {
-        case LessThan:
-            return SearchLessThan(items, n_items, key, index, 0, (n_items-1), 1);
-        case LessThanEquals:
-            return SearchLessThanEquals(items, n_items, key, index, 0, (n_items-1), 1);
-        case Equals:
-            return SearchEquals(items, n_items, key, index, 0, (n_items-1), 1);
-        case GreaterThanEquals:
-            return SearchGreaterThanEquals(items, n_items, key, index, 0, (n_items-1), 1);
-        case GreaterThan:
-            return SearchGreaterThan(items, n_items, key, index, 0, (n_items-1), 1);
-        default:
-            // Error
-            printf("Error in search type\n");
-            return NotFound;
-        }
+        return SearchHelper(items, key, type, index, 0, (n_items-1), 1);
     }
 }

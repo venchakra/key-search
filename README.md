@@ -223,8 +223,8 @@ Generating output.
 Processing file src/search.cpp
 Writing directory view page.
 Overall coverage rate:
-  lines......: 100.0% (65 of 65 lines)
-  functions..: 100.0% (6 of 6 functions)
-  branches...: 94.4% (51 of 54 branches)
+  lines......: 100.0% (60 of 60 lines)
+  functions..: 100.0% (7 of 7 functions)
+  branches...: 93.8% (45 of 48 branches)
 make[1]: Leaving directory `/media/sf_Code/Algos/test'
 </pre>
