@@ -2,120 +2,6 @@
 #include <cstdio>
 #include <cassert>
 
-static SearchResult
-SearchLessThan(const int * const items,
-               const int key,
-               int* const index,
-               const int start,
-               const int end,
-               const int step)
-{
-    if (items[start] >= key) {
-        return NotFound;
-    }
-
-    int idx = start;
-    while ((idx != end+step) && (items[idx] < key)) {
-        *index = idx;
-        idx+=step;
-    }
-
-    return FoundLess;
-}
-
-static SearchResult
-SearchLessThanEquals(const int * const items,
-                     const int key,
-                     int* const index,
-                     const int start,
-                     const int end,
-                     const int step)
-{
-    if (items[start] > key) {
-        return NotFound;
-    }
-
-    int idx = start;
-    while ((idx != end+step) && (items[idx] <= key)) {
-        *index = idx;
-        idx+=step;
-    }
-
-    if (items[*index] == key) {
-        return FoundExact;
-    }
-
-    return FoundLess;
-}
-
-static SearchResult
-SearchEquals(const int * const items,
-             const int key,
-             int* const index,
-             const int start,
-             const int end,
-             const int step)
-{ 
-    int idx = start;
-    while ((idx != end+step) && (items[idx] != key)) {
-        idx+=step;
-    }
-
-    if (items[idx] == key) {
-        *index = idx;
-        return FoundExact;
-    }
-
-    return NotFound;
-}
-
-static SearchResult
-SearchGreaterThanEquals(const int * const items,
-                        const int key,
-                        int* const index,
-                        const int start,
-                        const int end,
-                        const int step)
-{
-    int idx = start;
-    while ((idx != end) && (items[idx] < key)) {
-        idx+=step;
-    }
-
-    if (items[idx] < key) {
-        return NotFound;
-    }
-
-    *index = idx;
-
-    if (items[idx] == key) {
-        return FoundExact;
-    }
-
-    return FoundGreater;
-}
-
-static SearchResult
-SearchGreaterThan(const int * const items,
-                  const int key,
-                  int* const index,
-                  const int start,
-                  const int end,
-                  const int step)
-{
-    int idx = start;
-    while ((idx != end) && (items[idx] <= key)) {
-        idx+=step;
-    }
-
-    if (items[idx] <= key) {
-        return NotFound;
-    }
-
-    *index = idx;
-    return FoundGreater;
-}
-
 SearchResult
 SearchHelper(const int * const items,
              const int key,
@@ -127,15 +13,88 @@ SearchHelper(const int * const items,
 {
     switch (type) {
     case LessThan:
-        return SearchLessThan(items, key, index, start, end, step);
+        {
+            if (items[start] >= key) {
+                return NotFound;
+            }
+
+            int idx = start;
+            while ((idx != end+step) && (items[idx] < key)) {
+                *index = idx;
+                idx+=step;
+            }
+
+            return FoundLess;
+        }
     case LessThanEquals:
-        return SearchLessThanEquals(items, key, index, start, end, step);
+        {
+            if (items[start] > key) {
+                return NotFound;
+            }
+
+            int idx = start;
+            while ((idx != end+step) && (items[idx] <= key)) {
+                *index = idx;
+                idx+=step;
+            }
+
+            if (items[*index] == key) {
+                return FoundExact;
+            }
+
+            return FoundLess;
+        }
+
     case Equals:
-        return SearchEquals(items, key, index, start, end, step);
+        { 
+            int idx = start;
+            while ((idx != end+step) && (items[idx] != key)) {
+                idx+=step;
+            }
+
+            if (items[idx] == key) {
+                *index = idx;
+                return FoundExact;
+            }
+
+            return NotFound;
+        }
+
     case GreaterThanEquals:
-        return SearchGreaterThanEquals(items, key, index, start, end, step);
+        {
+            int idx = start;
+            while ((idx != end) && (items[idx] < key)) {
+                idx+=step;
+            }
+
+            if (items[idx] < key) {
+                return NotFound;
+            }
+
+            *index = idx;
+
+            if (items[idx] == key) {
+                return FoundExact;
+            }
+
+            return FoundGreater;
+        }
+
     case GreaterThan:
-        return SearchGreaterThan(items, key, index, start, end, step);
+        {
+            int idx = start;
+            while ((idx != end) && (items[idx] <= key)) {
+                idx+=step;
+            }
+
+            if (items[idx] <= key) {
+                return NotFound;
+            }
+
+            *index = idx;
+            return FoundGreater;
+        }
+
     default:
         // Error
         printf("Error in search type\n");
