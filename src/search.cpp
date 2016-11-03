@@ -26,6 +26,7 @@ SearchHelper(const int * const items,
 
             return FoundLess;
         }
+
     case LessThanEquals:
         {
             if (items[start] > key) {
