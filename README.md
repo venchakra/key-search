@@ -228,3 +228,132 @@ Overall coverage rate:
   branches...: 93.8% (45 of 48 branches)
 make[1]: Leaving directory `/media/sf_Code/Algos/test'
 </pre>
+
+<pre>
+venkatc@ubuntu-pc:/media/sf_Code/Algos/mapr $valgrind --tool=memcheck --error-exitcode=1 --fullpath-after= --gen-suppressions=all --leak-check=full --num-callers=50 --show-leak-kinds=definite --errors-for-leak-kinds=definite ./test/testrunner 
+==7913== Memcheck, a memory error detector
+==7913== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==7913== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==7913== Command: ./test/testrunner
+==7913== 
+Running cxxtest tests (54 tests)
+Dummy Test, does nothing
+.
+Search Ascending LessThan giving NotFound 0
+.
+Search Ascending LessThan giving FoundLess 0
+.
+Search Ascending LessThan giving NotFound 1
+.
+Search Ascending LessThan giving NotFound 2
+.
+Search Ascending LessThan giving FoundLess
+.
+Search Ascending LessThanEquals giving NotFound 0
+.
+Search Ascending LessThanEquals giving FoundExact 0
+.
+Search Ascending LessThanEquals giving FoundLess 0
+.
+Search Ascending LessThanEquals giving NotFound
+.
+Search Ascending LessThanEquals giving FoundExact
+.
+Search Ascending LessThanEquals giving FoundLess
+.
+Search Ascending Equals giving NotFound 0
+.
+Search Ascending Equals giving FoundExact 0
+.
+Search Ascending Equals giving FoundExact
+.
+Search Ascending Equals giving NotFound
+.
+Search Ascending GreaterThanEquals giving FoundGreater 0
+.
+Search Ascending GreaterThanEquals giving FoundExact 0
+.
+Search Ascending GreaterThanEquals giving NotFound 0
+.
+Search Ascending GreaterThanEquals giving FoundExact
+.
+Search Ascending GreaterThanEquals giving FoundGreater
+.
+Search Ascending GreaterThanEquals giving NotFound 1
+.
+Search Ascending GreaterThan giving FoundGreater 0
+.
+Search Ascending GreaterThan giving NotFound 0
+.
+Search Ascending GreaterThan giving FoundGreater
+.
+Search Ascending GreaterThan giving NotFound 1
+.
+Search Ascending GreaterThan giving NotFound 2
+.
+Search Ascending with Wrong Search Type
+Error in search type
+.
+Search Descending with Wrong Search Type
+Error in search type
+.
+Search Descending LessThan giving FoundLess 0
+.
+Search Descending LessThan giving NotFound 0
+.
+Search Descending LessThan giving FoundLess
+.
+Search Descending LessThan giving NotFound 1
+.
+Search Descending LessThan giving NotFound 2
+.
+Search Descending LessThanEquals giving FoundLess 0
+.
+Search Descending LessThanEquals giving FoundExact 0
+.
+Search Descending LessThanEquals giving NotFound 0
+.
+Search Descending LessThanEquals giving FoundLess
+.
+Search Descending LessThanEquals giving FoundExact
+.
+Search Descending LessThanEquals giving NotFound
+.
+Search Descending Equals giving NotFound 0
+.
+Search Descending Equals giving NotFound 0
+.
+Search Descending Equals giving NotFound
+.
+Search Descending Equals giving FoundExact
+.
+Search Descending GreaterThanEquals giving NotFound 0
+.
+Search Descending GreaterThanEquals giving FoundExact 0
+.
+Search Descending GreaterThanEquals giving FoundGreater 0
+.
+Search Descending GreaterThanEquals giving NotFound
+.
+Search Descending GreaterThanEquals giving FoundExact
+.
+Search Descending GreaterThanEquals giving FoundGreater
+.
+Search Descending GreaterThan giving NotFound 0
+.
+Search Descending GreaterThan giving FoundGreater 0
+.
+Search Descending GreaterThan giving FoundGreater
+.
+Search Descending GreaterThan giving NotFound
+.OK!
+==7913== 
+==7913== HEAP SUMMARY:
+==7913==     in use at exit: 0 bytes in 0 blocks
+==7913==   total heap usage: 3 allocs, 3 frees, 880 bytes allocated
+==7913== 
+==7913== All heap blocks were freed -- no leaks are possible
+==7913== 
+==7913== For counts of detected and suppressed errors, rerun with: -v
+==7913== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+</pre>

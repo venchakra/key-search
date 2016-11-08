@@ -41,7 +41,7 @@ SearchHelper(const int * const items,
         return FoundLess;
 
     case Equals:
-        while ((startIndex != endIndex+step) && (items[startIndex] != key)) {
+        while ((startIndex != endIndex) && (items[startIndex] < key)) {
             startIndex += step;
         }
 
