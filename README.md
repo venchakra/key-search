@@ -66,15 +66,15 @@ Example run: Running 'make clean'
 <pre>
 venkatc@ubuntu-pc:/media/sf_Code/Algos $make clean
 set -e; for d in src test; do make -C $d clean; done
-make[1]: Entering directory `/media/sf_Code/Algos/mapr/src'
+make[1]: Entering directory `/media/sf_Code/Algos/src'
 rm -rf ../lib/libsearcher.a search.o *~ *.gc* *.html
 rm -rf ../lib
 rm -rf .cccc
-make[1]: Leaving directory `/media/sf_Code/Algos/mapr/src'
-make[1]: Entering directory `/media/sf_Code/Algos/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/src'
+make[1]: Entering directory `/media/sf_Code/Algos/test'
 rm -rf testrunner searchtest.cpp searchtest.o *~
 rm -rf ../coverage
-make[1]: Leaving directory `/media/sf_Code/Algos/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/test'
 rm -rf *~
 </pre>
 
@@ -84,7 +84,7 @@ Example run: Running 'make'
 <pre>
 venkatc@ubuntu-pc:/media/sf_Code/Algos $make
 set -e; for d in src test; do make -C $d ; done
-make[1]: Entering directory `/media/sf_Code/Algos/mapr/src'
+make[1]: Entering directory `/media/sf_Code/Algos/src'
 g++ -g -fprofile-arcs -ftest-coverage -I./ -c search.cpp
 ar -r libsearcher.a search.o
 ar: creating libsearcher.a
@@ -125,8 +125,8 @@ Primary XML output is in .cccc/cccc.xml
 Detailed XML reports on modules are in .cccc
 Database dump is in .cccc/cccc.db
 
-make[1]: Leaving directory `/media/sf_Code/Algos/mapr/src'
-make[1]: Entering directory `/media/sf_Code/Algos/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/src'
+make[1]: Entering directory `/media/sf_Code/Algos/test'
 cxxtestgen --error-printer -o searchtest.cpp searchtest.ut
 g++ -g -I../src -L../lib  -lsearcher -lgcov -c searchtest.cpp
 g++ -g -I../src -o testrunner searchtest.o -L../lib  -lsearcher -lgcov
@@ -378,7 +378,7 @@ Finished .info-file creation
 genhtml --branch-coverage -o ../coverage ../coverage/stap.info
 Reading data file ../coverage/stap.info
 Found 1 entries.
-Found common filename prefix "/media/sf_Code/Algos/mapr"
+Found common filename prefix "/media/sf_Code/Algos"
 Writing .css and .png files.
 Generating output.
 Processing file src/search.cpp
@@ -387,5 +387,5 @@ Overall coverage rate:
   lines......: 100.0% (27 of 27 lines)
   functions..: 100.0% (2 of 2 functions)
   branches...: 100.0% (28 of 28 branches)
-make[1]: Leaving directory `/media/sf_Code/Algos/mapr/test'
+make[1]: Leaving directory `/media/sf_Code/Algos/test'
 </pre>
