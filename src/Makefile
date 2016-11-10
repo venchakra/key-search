@@ -3,22 +3,21 @@ AR= ar
 LN= ln
 CXX= g++
 CXXFLAGS= -g -fprofile-arcs -ftest-coverage
+CCCC= cccc
 INCLUDES += -I./
 LIBNAME=searcher
 LIBA= lib$(LIBNAME).a
 
 TESTPATH= ./test
-#LIBS= -lsearcher
-#BINS= searcher
 
-.SUFFIXES: .cc
+.SUFFIXES: .cpp
 
-.cc.o:
+.cpp.o:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $<
 
-all: $(LIBA)
+all: $(LIBA) cccc
 
-SRCS=	search.cc
+SRCS=	search.cpp
 
 OBJS= $(addsuffix .o, $(basename $(SRCS)))
 
@@ -28,8 +27,12 @@ $(LIBA): $(OBJS)
 	rm -f ../lib/$@
 	mv $@ ../lib/$@
 
+cccc:
+	$(CCCC) $(SRCS)
+
 .PHONY: clean
 
 clean:
 	rm -rf ../lib/$(LIBA) $(OBJS) *~ *.gc* *.html
 	rm -rf ../lib
+	rm -rf .cccc

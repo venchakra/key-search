@@ -16,7 +16,7 @@ BINS= testrunner
 .cpp.o:
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(LIBPATH) $(LIBS) -c $<
 
-all: $(BINS) runtest
+all: $(BINS) valgrind runtest
 
 SRCS= searchtest.ut
 
@@ -26,6 +26,9 @@ TESTOBJS= $(addsuffix .o, $(basename $(SRCS)))
 
 testrunner: $(TESTSRCS) $(TESTOBJS)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ $(TESTOBJS) $(LIBPATH) $(LIBS)
+
+valgrind:
+	valgrind --tool=memcheck --error-exitcode=1 --fullpath-after= --gen-suppressions=all --leak-check=full --num-callers=50 --show-leak-kinds=definite --errors-for-leak-kinds=definite $(BINS)
 
 runtest:
 	mkdir -p ../coverage
