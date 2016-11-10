@@ -1,6 +1,4 @@
 #include "search.h"
-#include <cstdio>
-#include <cassert>
 
 SearchResult
 SearchHelper(const int * const items,
