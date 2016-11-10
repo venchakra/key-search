@@ -5,6 +5,8 @@ This code has been compiled using:
 - gcov (version 4.8.4) -- for code coverage
 - lcov/genhtml (version 1.10) -- for code coverage and HTML reports
 - cxxtestgen (version 4.3) -- for CxxTest automated unit tests
+- valgrind (version 3.10.1) -- memory leak detector
+- cccc (version 3.1.4) -- cyclomatic complexity analyser
 
 The above tools need to be installed on your system before building
 the sources and executing the unit tests.
