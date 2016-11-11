@@ -1,4 +1,6 @@
 #include "search.h"
+#include <cassert>
+#include <cstdio>
 
 SearchResult
 Search(const int * const items,
@@ -8,6 +10,8 @@ Search(const int * const items,
        const SearchType type,
        int* const index)
 {
+    assert(NULL != index);
+
     int startIndex = 0;
     int endIndex = (n_items-1);
     int step = 1;

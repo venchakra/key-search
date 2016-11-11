@@ -5,13 +5,6 @@
 class SearchTestSuite : public CxxTest::TestSuite
 {
  public:
-        void testDummy(void)
-        {
-                printf("\nDummy Test, does nothing\n");
-                TS_ASSERT(1 + 1 > 1);
-                TS_ASSERT_EQUALS(1 + 1, 2);
-        }
-
     //-------------------------------------------------------------------------
     // Tests for Ascending LessThan
     //-------------------------------------------------------------------------
